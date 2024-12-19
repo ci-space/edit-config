@@ -2,6 +2,7 @@ package actions
 
 import (
 	"fmt"
+	githuboutput "github.com/ci-space/github-output"
 
 	"github.com/artarts36/yamlpath"
 
@@ -63,9 +64,16 @@ func (act *UpImageVersionAction) Run(doc *yamlpath.Document, params Params) (*Re
 		return act.dryRun(newContent, params)
 	}
 
-	err = act.fs.WriteFile(params.Filepath, []byte{})
+	err = act.fs.WriteFile(params.Filepath, newContent)
 	if err != nil {
 		return nil, fmt.Errorf("failed to write updated config: %w", err)
+	}
+
+	err = githuboutput.WhenAvailable(func() error {
+		return githuboutput.Write("new-value", vImage.String())
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to write to github output: %w", err)
 	}
 
 	return &Result{
