@@ -4,6 +4,12 @@ github.com/artarts36/yamlpath v0.1.0 h1:p/N2P5qKxSUZBk7cTT+PoQygXsTcie6f/Xqz4nys
 github.com/artarts36/yamlpath v0.1.0/go.mod h1:DT69lXSA1XIaVras0ukMETRO6srRYbPMVxEyG+tplo4=
 github.com/artarts36/yamlpath v0.1.1 h1:Zk6GMdxjK7KtLiMeqz4gEJFupZ95kzXSa9OHS4jTtUI=
 github.com/artarts36/yamlpath v0.1.1/go.mod h1:DT69lXSA1XIaVras0ukMETRO6srRYbPMVxEyG+tplo4=
+github.com/artarts36/yamlpath v0.1.2 h1:qZyDoUkNSPGUb/6ObIew5w4pk6I4RoIbfCbKtFFVwMo=
+github.com/artarts36/yamlpath v0.1.2/go.mod h1:DT69lXSA1XIaVras0ukMETRO6srRYbPMVxEyG+tplo4=
+github.com/artarts36/yamlpath v0.1.3 h1:Bo4WU2BtedKewzhN+5g7YZPT9sRg64yUAjGfdofTYeo=
+github.com/artarts36/yamlpath v0.1.3/go.mod h1:DT69lXSA1XIaVras0ukMETRO6srRYbPMVxEyG+tplo4=
+github.com/artarts36/yamlpath v0.1.4 h1:MPX/dz/FApHnA20s72pfM7k1dQBORZFtnfG31ZoqdXI=
+github.com/artarts36/yamlpath v0.1.4/go.mod h1:DT69lXSA1XIaVras0ukMETRO6srRYbPMVxEyG+tplo4=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
 github.com/bahlo/generic-list-go v0.2.0/go.mod h1:2KvAjgMlE5NNynlg/5iLrrCCZ2+5xWbdbCW3pNTGyYg=
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=

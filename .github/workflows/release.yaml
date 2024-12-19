@@ -1,0 +1,32 @@
+name: release
+
+permissions:
+  packages: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: version
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  code-lint:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4 # action page: <https://github.com/actions/setup-go>
+        with:
+          go-version: stable
+
+      - name: Install Go dependencies
+        run: go mod download
+
+      - name: 

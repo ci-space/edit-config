@@ -4,7 +4,7 @@ go 1.23.3
 
 require (
 	github.com/artarts36/singlecli v0.0.0-20241217004936-26a85d49cb53
-	github.com/artarts36/yamlpath v0.1.1
+	github.com/artarts36/yamlpath v0.1.4
 	github.com/stretchr/testify v1.10.0
 	gopkg.in/yaml.v3 v3.0.1
 )

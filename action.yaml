@@ -1,0 +1,23 @@
+name: "edit-config"
+description: "action for editing configuration files"
+inputs:
+    file:
+        description: path to YAML file
+        required: true
+    action:
+        description: action to edit (get, update, up-image-version)
+        required: true
+    pointer:
+        description: pointer to element in YAML file
+        required: true
+    value:
+        description: 'new value in YAML file (for up-image-version: major, minor, patch)'
+        required: false
+runs:
+    using: docker
+    image: ghcr.io/ci-space/edit-config:v0.1.0
+    args:
+        - "${{ inputs.file }}"
+        - "${{ inputs.action }}"
+        - "${{ inputs.pointer }}"
+        - "${{ inputs.value }}"
