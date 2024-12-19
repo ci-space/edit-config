@@ -1,9 +1,7 @@
 package actions
 
-import "github.com/artarts36/yamlpath"
-
 type Action interface {
-	Run(content *yamlpath.Document, params Params) (*Result, error)
+	Run(params Params) (*Result, error)
 }
 
 type Params struct {

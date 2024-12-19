@@ -54,7 +54,7 @@ func run(ctx *cli.Context) error {
 		return err
 	}
 
-	return command.Run(cmd.ActionParams{
+	return command.Run(cmd.Params{
 		Filepath: ctx.GetArg("file"),
 		Action:   action,
 		Pointer:  ctx.GetArg("pointer"),

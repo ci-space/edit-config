@@ -3,8 +3,10 @@ package actions
 import (
 	"fmt"
 	githuboutput "github.com/ci-space/github-output"
+	"github.com/goccy/go-yaml/parser"
+	"strings"
 
-	"github.com/artarts36/yamlpath"
+	gyaml "github.com/goccy/go-yaml"
 
 	"github.com/ci-space/edit-config/internal/fs"
 	"github.com/ci-space/edit-config/internal/shared/image"
@@ -18,20 +20,22 @@ func NewUpImageVersionAction(fs fs.Filesystem) *UpImageVersionAction {
 	return &UpImageVersionAction{fs: fs}
 }
 
-func (act *UpImageVersionAction) Run(doc *yamlpath.Document, params Params) (*Result, error) {
-	img, err := doc.Get(yamlpath.NewPointer(params.Pointer))
+func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
+	file, err := act.fs.ReadFile(params.Filepath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to read file: %v", err)
 	}
 
-	imageVal, err := img.AsScalar()
+	path, err := gyaml.PathString(preparePointer(params.Pointer))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse pointer: %v", err)
 	}
 
-	imageString, ok := imageVal.(string)
-	if !ok {
-		return nil, fmt.Errorf("expected img to be a string")
+	var imageString string
+
+	err = path.Read(file.Reader(), &imageString)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read yaml: %v", err)
 	}
 
 	vImage, err := image.ParseImage(imageString)
@@ -50,21 +54,23 @@ func (act *UpImageVersionAction) Run(doc *yamlpath.Document, params Params) (*Re
 		return nil, fmt.Errorf("unsupported version up method %q", params.NewValue)
 	}
 
-	err = img.Update(nil, vImage.String())
+	yFile, err := parser.ParseBytes(file.Content, parser.ParseComments)
 	if err != nil {
-		return nil, fmt.Errorf("failed to update image version: %w", err)
+		return nil, err
 	}
 
-	newContent, err := doc.Marshal()
+	err = path.ReplaceWithReader(yFile, strings.NewReader(vImage.String()))
 	if err != nil {
-		return nil, fmt.Errorf("failed to marshal new document content: %w", err)
+		return nil, err
 	}
+
+	newContent := yFile.String()
 
 	if params.DryRun {
 		return act.dryRun(newContent, params)
 	}
 
-	err = act.fs.WriteFile(params.Filepath, newContent)
+	err = act.fs.WriteFile(params.Filepath, []byte(newContent))
 	if err != nil {
 		return nil, fmt.Errorf("failed to write updated config: %w", err)
 	}
@@ -85,7 +91,7 @@ func (act *UpImageVersionAction) Run(doc *yamlpath.Document, params Params) (*Re
 	}, nil
 }
 
-func (act *UpImageVersionAction) dryRun(newContent []byte, params Params) (*Result, error) {
+func (act *UpImageVersionAction) dryRun(newContent string, params Params) (*Result, error) {
 	return &Result{
 		Rows: []ResultRow{
 			{

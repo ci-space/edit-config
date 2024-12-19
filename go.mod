@@ -4,8 +4,8 @@ go 1.23.3
 
 require (
 	github.com/artarts36/singlecli v0.0.0-20241217004936-26a85d49cb53
-	github.com/artarts36/yamlpath v0.1.4
 	github.com/ci-space/github-output v0.1.1
+	github.com/goccy/go-yaml v1.15.11
 )
 
 require (
