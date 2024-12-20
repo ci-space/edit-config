@@ -6,6 +6,13 @@ edit-config - is console app and GitHub action for editing configuration files
 
 ### Release workflow with up image version in GitHub action.yaml
 
+<p align="center">
+  <img src="./docs/usage_release_1.png" />
+  <img src="./docs/usage_release_2.png" />
+</p>
+
+**./github/workflows/release.yaml:**
+
 ```yaml
 name: release
 
