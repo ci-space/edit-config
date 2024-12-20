@@ -3,11 +3,13 @@ package image
 import (
 	"fmt"
 	"strings"
+
+	versionobject "github.com/ci-space/version-object"
 )
 
 type Image struct {
 	Name    string
-	Version *Version
+	Version *versionobject.Version
 }
 
 func ParseImage(img string) (*Image, error) {
@@ -18,7 +20,7 @@ func ParseImage(img string) (*Image, error) {
 		return nil, fmt.Errorf("expected image to have at least two parts")
 	}
 
-	version, err := ParseVersion(imageParts[len(imageParts)-1])
+	version, err := versionobject.ParseVersion(imageParts[len(imageParts)-1])
 	if err != nil {
 		return nil, err
 	}

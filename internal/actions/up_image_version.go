@@ -76,11 +76,11 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 func (act *UpImageVersionAction) upVersion(img *image.Image, params Params) error {
 	switch params.NewValue {
 	case "major":
-		img.Version.UpMajor()
+		img.Version = img.Version.UpMajor()
 	case "minor":
-		img.Version.UpMinor()
+		img.Version = img.Version.UpMinor()
 	case "patch":
-		img.Version.UpPatch()
+		img.Version = img.Version.UpPatch()
 	default:
 		return fmt.Errorf("unsupported version up method %q", params.NewValue)
 	}
