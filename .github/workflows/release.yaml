@@ -8,6 +8,8 @@ on:
     inputs:
       version:
         description: version
+        required: true
+        type: choice
         options:
         - major
         - minor
