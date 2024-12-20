@@ -9,9 +9,9 @@ on:
       version:
         description: version
         options:
-          - major
-          - minor
-          - patch
+        - major
+        - minor
+        - patch
 
 jobs:
   code-lint:
