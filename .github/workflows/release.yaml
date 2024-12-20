@@ -50,7 +50,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            APP_VERSION=${{ steps.version.inputs.new-version }}
+            APP_VERSION=${{ steps.version.outputs.new-version }}
             BUILD_TIME=${{ steps.values.outputs.timestamp }}
           tags: |
-            ghcr.io/ci-space/edit-config:${{ steps.version.inputs.new-version }}
+            ghcr.io/ci-space/edit-config:${{ steps.version.outputs.new-version }}
