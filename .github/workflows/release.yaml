@@ -64,7 +64,7 @@ jobs:
       - name: Commit changes
         run: |
           git add action.yaml
-          git commit -m "chore: update image version ${{ steps.version.outputs.new-version }} in action.yaml"
+          git commit -m "chore: update image version ${{ steps.version.outputs.new-version }} in action.yaml" -author 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
           git push
 
       - name: Create Tag
