@@ -28,8 +28,8 @@ LABEL org.opencontainers.image.description="is console app and GitHub action for
 LABEL org.opencontainers.image.url="https://github.com/ci-space/edit-config"
 LABEL org.opencontainers.image.source="https://github.com/ci-space/edit-config"
 LABEL org.opencontainers.image.vendor="ArtARTs36"
-LABEL org.opencontainers.image.version="$APP_VERSION"
-LABEL org.opencontainers.image.created="$BUILD_TIME"
+LABEL org.opencontainers.image.version="${APP_VERSION}"
+LABEL org.opencontainers.image.created="${BUILD_TIME}"
 LABEL org.opencontainers.image.licenses="MIT"
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
