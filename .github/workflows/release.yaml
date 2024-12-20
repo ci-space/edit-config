@@ -26,6 +26,20 @@ jobs:
         with:
           go-version: stable
 
+      - name: Generate next version
+        id: version
+        uses: ci-space/edit-config@master
+        with:
+          file: action.yaml
+          action: up-image-version
+          pointer: runs.image
+          value: ${{ github.event.inputs.version }}
+
+      - name: Generate builder values
+        id: values
+        run: |
+          echo "timestamp=$(echo $(date "+%F %T"))" >> $GITHUB_OUTPUT
+
       - name: Build image
         uses: docker/build-push-action@v4 # Action page: <https://github.com/docker/build-push-action>
         with:
@@ -34,7 +48,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            APP_VERSION=${{ steps.values.outputs.version_full}}
+            APP_VERSION=${{ steps.version.inputs.new-version }}
             BUILD_TIME=${{ steps.values.outputs.timestamp }}
           tags: |
             ghcr.io/ci-space/edit-config:${{ steps.values.outputs.version_full}}

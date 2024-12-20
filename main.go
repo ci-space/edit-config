@@ -7,11 +7,18 @@ import (
 	"github.com/ci-space/edit-config/internal/cmd"
 )
 
+var (
+	Version   = "v0.1.0"
+	BuildDate = "2024-12-20 03:09:15"
+)
+
 func main() {
 	app := &cli.App{
 		BuildInfo: &cli.BuildInfo{
 			Name:        "edit-config",
 			Description: "edit-config is a tool that edits YAML files",
+			Version:     Version,
+			BuildDate:   BuildDate,
 		},
 		Action: run,
 		Args: []*cli.ArgDefinition{

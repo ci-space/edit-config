@@ -24,7 +24,7 @@ COPY --from=builder /go/bin/edit-config /go/bin/edit-config
 
 # https://github.com/opencontainers/image-spec/blob/main/annotations.md
 LABEL org.opencontainers.image.title="edit-config"
-LABEL org.opencontainers.image.description="Get modules contained in the repository (./, ./pkg)"
+LABEL org.opencontainers.image.description="is console app and GitHub action for editing configuration files"
 LABEL org.opencontainers.image.url="https://github.com/ci-space/edit-config"
 LABEL org.opencontainers.image.source="https://github.com/ci-space/edit-config"
 LABEL org.opencontainers.image.vendor="ArtARTs36"
