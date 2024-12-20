@@ -53,4 +53,4 @@ jobs:
             APP_VERSION=${{ steps.version.inputs.new-version }}
             BUILD_TIME=${{ steps.values.outputs.timestamp }}
           tags: |
-            ghcr.io/ci-space/edit-config:${{ steps.values.outputs.version_full}}
+            ghcr.io/ci-space/edit-config:${{ steps.version.inputs.new-version }}
