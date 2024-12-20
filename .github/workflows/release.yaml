@@ -1,8 +1,6 @@
 name: release
 
-permissions:
-  packages: write
-  contents: write
+permissions: write-all
 
 on:
   workflow_dispatch:
