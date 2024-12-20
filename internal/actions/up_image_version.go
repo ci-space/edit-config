@@ -2,11 +2,9 @@ package actions
 
 import (
 	"fmt"
-	githuboutput "github.com/ci-space/github-output"
-	"github.com/goccy/go-yaml/parser"
 	"strings"
 
-	gyaml "github.com/goccy/go-yaml"
+	githuboutput "github.com/ci-space/github-output"
 
 	"github.com/ci-space/edit-config/internal/fs"
 	"github.com/ci-space/edit-config/internal/shared/image"
@@ -21,21 +19,16 @@ func NewUpImageVersionAction(fs fs.Filesystem) *UpImageVersionAction {
 }
 
 func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
-	file, err := act.fs.ReadFile(params.Filepath)
+	doc, err := loadDocument(act.fs, params.Filepath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %v", err)
-	}
-
-	path, err := gyaml.PathString(preparePointer(params.Pointer))
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse pointer: %v", err)
+		return nil, fmt.Errorf("failed to load document: %v", err)
 	}
 
 	var imageString string
 
-	err = path.Read(file.Reader(), &imageString)
+	err = doc.Read(params.Pointer, &imageString)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read yaml: %v", err)
+		return nil, fmt.Errorf("failed to read current version: %v", err)
 	}
 
 	vImage, err := image.ParseImage(imageString)
@@ -43,28 +36,17 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 		return nil, err
 	}
 
-	switch params.NewValue {
-	case "major":
-		vImage.Version.UpMajor()
-	case "minor":
-		vImage.Version.UpMinor()
-	case "patch":
-		vImage.Version.UpPatch()
-	default:
-		return nil, fmt.Errorf("unsupported version up method %q", params.NewValue)
-	}
-
-	yFile, err := parser.ParseBytes(file.Content, parser.ParseComments)
+	err = act.upVersion(vImage, params)
 	if err != nil {
 		return nil, err
 	}
 
-	err = path.ReplaceWithReader(yFile, strings.NewReader(vImage.String()))
+	err = doc.UpdateValue(params.Pointer, strings.NewReader(vImage.String()))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to update version: %v", err)
 	}
 
-	newContent := yFile.String()
+	newContent := doc.String()
 
 	if params.DryRun {
 		return act.dryRun(newContent, params)
@@ -76,7 +58,7 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 	}
 
 	err = githuboutput.WhenAvailable(func() error {
-		return githuboutput.Write("new-value", vImage.String())
+		return githuboutput.Write("new-version", vImage.String())
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to write to github output: %w", err)
@@ -89,6 +71,20 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 			},
 		},
 	}, nil
+}
+
+func (act *UpImageVersionAction) upVersion(img *image.Image, params Params) error {
+	switch params.NewValue {
+	case "major":
+		img.Version.UpMajor()
+	case "minor":
+		img.Version.UpMinor()
+	case "patch":
+		img.Version.UpPatch()
+	default:
+		return fmt.Errorf("unsupported version up method %q", params.NewValue)
+	}
+	return nil
 }
 
 func (act *UpImageVersionAction) dryRun(newContent string, params Params) (*Result, error) {

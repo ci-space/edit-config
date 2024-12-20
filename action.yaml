@@ -1,5 +1,6 @@
 name: "edit-config"
 description: "action for editing configuration files"
+
 inputs:
     file:
         description: path to YAML file
@@ -13,6 +14,11 @@ inputs:
     value:
         description: 'new value in YAML file (for up-image-version: major, minor, patch)'
         required: false
+
+outputs:
+    new-version:
+        description: new version for up-image-version action
+
 runs:
     using: docker
     image: ghcr.io/ci-space/edit-config:v0.1.0
