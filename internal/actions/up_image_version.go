@@ -58,7 +58,7 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 	}
 
 	err = githuboutput.WhenAvailable(func() error {
-		return githuboutput.Write("new-version", vImage.String())
+		return githuboutput.Write("new-version", vImage.Version.String())
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to write to github output: %w", err)
