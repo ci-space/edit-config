@@ -1,6 +1,10 @@
 name: "edit-config"
 description: "action for editing configuration files"
 
+branding:
+    icon: edit-3
+    color: black
+
 inputs:
     file:
         description: path to YAML file
