@@ -54,3 +54,16 @@ jobs:
             BUILD_TIME=${{ steps.values.outputs.timestamp }}
           tags: |
             ghcr.io/ci-space/edit-config:${{ steps.version.outputs.new-version }}
+
+      - name: Commit changes
+        run: |
+          git add action.yaml
+          git commit -m "chore: update image version ${{ steps.version.outputs.new-version }} in action.yaml"
+          git push
+
+      - name: Create Tag
+        uses: negz/create-tag@v1
+        with:
+          version: ${{ steps.version.outputs.new-version }}
+          message: ''
+          token: ${{ secrets.GITHUB_TOKEN }}
