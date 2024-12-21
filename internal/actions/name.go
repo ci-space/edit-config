@@ -9,9 +9,10 @@ type Name string
 
 const (
 	NameUpImageVersion Name = "up-image-version"
+	NameAppend         Name = "append"
 )
 
-var Names = []string{string(NameUpImageVersion)}
+var Names = []string{string(NameUpImageVersion), string(NameAppend)}
 
 func NameFromString(val string) (Name, error) {
 	if val == "" {
