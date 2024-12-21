@@ -27,10 +27,11 @@ func (c *Command) Run(params Params) error {
 
 func (c *Command) runAction(act actions.Action, params Params) error {
 	res, err := act.Run(actions.Params{
-		Filepath: params.Filepath,
-		Pointer:  params.Pointer,
-		NewValue: params.NewValue,
-		DryRun:   params.DryRun,
+		Filepath:  params.Filepath,
+		Pointer:   params.Pointer,
+		NewValue:  params.NewValue,
+		DryRun:    params.DryRun,
+		Separator: params.Separator,
 	})
 	if err != nil {
 		return err

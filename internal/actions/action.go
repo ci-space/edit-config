@@ -5,10 +5,11 @@ type Action interface {
 }
 
 type Params struct {
-	Filepath string
-	Pointer  string
-	NewValue string
-	DryRun   bool
+	Filepath  string
+	Pointer   string
+	NewValue  string
+	DryRun    bool
+	Separator string
 }
 
 type Result struct {

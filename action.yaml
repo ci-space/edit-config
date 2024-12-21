@@ -18,6 +18,9 @@ inputs:
     value:
         description: 'new value in YAML file (for up-image-version: major, minor, patch)'
         required: false
+    separator:
+        description: 'separator for split value to array, default - no split'
+        required: false
 
 outputs:
     new-version:
@@ -31,3 +34,5 @@ runs:
         - "${{ inputs.action }}"
         - "${{ inputs.pointer }}"
         - "${{ inputs.value }}"
+        - "${{ inputs.separator }}"
+        - "${{ inputs.separator != '' && format('--separator={0}', inputs.separator) || '' }}"

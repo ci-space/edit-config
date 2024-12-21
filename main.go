@@ -47,6 +47,11 @@ func main() {
 			{
 				Name: "dry-run",
 			},
+			{
+				Name:        "separator",
+				Description: "separate value",
+				WithValue:   true,
+			},
 		},
 	}
 
@@ -62,10 +67,11 @@ func run(ctx *cli.Context) error {
 	}
 
 	return command.Run(cmd.Params{
-		Filepath: ctx.GetArg("file"),
-		Action:   action,
-		Pointer:  ctx.GetArg("pointer"),
-		NewValue: ctx.GetArg("new-value"),
-		DryRun:   ctx.HasOpt("dry-run"),
+		Filepath:  ctx.GetArg("file"),
+		Action:    action,
+		Pointer:   ctx.GetArg("pointer"),
+		NewValue:  ctx.GetArg("new-value"),
+		DryRun:    ctx.HasOpt("dry-run"),
+		Separator: ctx.Opts["separator"],
 	})
 }

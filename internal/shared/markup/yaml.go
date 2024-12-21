@@ -218,7 +218,7 @@ func (y *YAMLDocument) prepareNewValueForSequence(
 		case string:
 			newValue = v
 		default:
-			return nil, fmt.Errorf("value for %q must be a string", pointer)
+			return nil, fmt.Errorf("value for %q must be a string, got %T", pointer, value)
 		}
 	}
 
