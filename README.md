@@ -2,48 +2,22 @@
 
 edit-config - is console app and GitHub action for editing configuration files
 
+## Workflow examples based on edit-config
+- [Manual release workflow with up image version](./docs/example_release_up_image_version.md)
+
 ## Usage
 
-### Release workflow with up image version in GitHub action.yaml
+Available actions:
+- Up image version
+- Append: add value to array / concat string / add number
 
-<p align="center">
-  <img src="./docs/usage_release_1.png" />
-  <img src="./docs/usage_release_2.png" />
-</p>
-
-**./github/workflows/release.yaml:**
+### Up image version
 
 ```yaml
-name: release
-
-permissions: write-all
-
-on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: version
-        required: true
-        type: choice
-        options:
-        - major
-        - minor
-        - patch
-
 jobs:
-  release:
-    name: release
-    runs-on: ubuntu-latest
+  up-image-version:
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Set up Go
-        uses: actions/setup-go@v4 # action page: <https://github.com/actions/setup-go>
-        with:
-          go-version: stable
-
-      - name: Generate next version
+      - name: Up image version
         id: version
         uses: ci-space/edit-config@master
         with:
@@ -52,35 +26,21 @@ jobs:
           pointer: runs.image
           value: ${{ github.event.inputs.version }}
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print image version
+        run: echo ${{ steps.version.outputs.new-version }}
+```
 
-      - name: Build image
-        uses: docker/build-push-action@v4 # Action page: <https://github.com/docker/build-push-action>
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          platforms: linux/amd64
-          tags: |
-            ghcr.io/ci-space/edit-config:${{ steps.version.outputs.new-version }}
+### Append value to array
 
-      - name: Commit changes
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
-          git add action.yaml
-          git commit -m "chore: update image version ${{ steps.version.outputs.new-version }} in action.yaml"
-          git push
-
-      - name: Create Tag
-        uses: negz/create-tag@v1
+```yaml
+jobs:
+  append-value-to-array:
+    steps:
+      - name: Append value to array
+        uses: ci-space/edit-config@master
         with:
-          version: ${{ steps.version.outputs.new-version }}
-          message: ''
-          token: ${{ secrets.GITHUB_TOKEN }}
+          file: users.yaml
+          action: append
+          pointer: users[0].phones
+          value: '123'
 ```
