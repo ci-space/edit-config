@@ -28,7 +28,7 @@ outputs:
 
 runs:
     using: docker
-    image: {}
+    image: docker://ghcr.io/ci-space/edit-config:v0.2.1
     args:
         - "${{ inputs.file }}"
         - "${{ inputs.action }}"
