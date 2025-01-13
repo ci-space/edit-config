@@ -2,8 +2,6 @@ package actions
 
 import (
 	"fmt"
-	"strings"
-
 	githuboutput "github.com/ci-space/github-output"
 
 	"github.com/ci-space/edit-config/internal/fs"
@@ -41,7 +39,7 @@ func (act *UpImageVersionAction) Run(params Params) (*Result, error) {
 		return nil, err
 	}
 
-	err = doc.UpdateValue(params.Pointer, strings.NewReader(vImage.String()))
+	err = doc.UpdateValue(params.Pointer, vImage.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to update version: %v", err)
 	}
